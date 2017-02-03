@@ -399,6 +399,8 @@ def get_reduced_parameters(baseline, guid, user_modifiable, metadata):
     #   Bequest and Payroll Taxes
     tau_bq = np.zeros(J)
     tau_payroll = 0.15
+    tau_corp = 0.35 # statutory corporate income tax
+    delta_tc = 0.05 # implied rate of corporate tax deduction. Expensing approximately equals 2x economic depreciation.
     retire = np.round(9.0 * S / 16.0) - 1
 
     # Simulation Parameters
@@ -462,7 +464,7 @@ def get_full_parameters(baseline, guid, user_modifiable, metadata):
     --------------------------------------------------------------------
     '''
     # Model Parameters
-    S = int(80)
+    S = int(40)
     lambdas = np.array([0.25, 0.25, 0.2, 0.1, 0.1, 0.09, 0.01])
     J = lambdas.shape[0]
     T = int(4 * S)
@@ -709,6 +711,8 @@ def get_full_parameters(baseline, guid, user_modifiable, metadata):
     #   Bequest and Payroll Taxes
     tau_bq = np.zeros(J)
     tau_payroll = 0.0 #0.15 # were are inluding payroll taxes in tax functions for now
+    tau_corp = 0.35 # statutory corporate income tax
+    delta_tc = 0.05 # implied rate of corporate tax deduction. Expensing approximately equals 2x economic depreciation.
     retire = np.int(np.round(9.0 * S / 16.0) - 1)
 
     # Simulation Parameters

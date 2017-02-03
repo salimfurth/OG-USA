@@ -28,6 +28,8 @@ def get_r(Y, K, params):
         params = length 2 tuple, (alpha, delta)
         alpha  = scalar, capital's share of output
         delta  = scalar, rate of depreciation of capital
+        tau_corp = scalar, statutory corporate tax rate
+        delta_tc = scalar, effective depreciation rate implied by tax law.
 
     Functions called: None
 
@@ -37,8 +39,8 @@ def get_r(Y, K, params):
     Returns: r
     '''
 
-    alpha, delta = params
-    r = (alpha * Y / K) - delta
+    alpha, delta, tau_corp, delta_tc = params
+    r = (1-tau_corp)*(alpha * Y / K) - delta + tau_corp * delta_tc
     return r
 
 
@@ -167,15 +169,17 @@ def get_K(L, r, params):
         alpha  = scalar, capital's share of output
         delta  = scalar, rate of depreciation of capital
         Z      = scalar, total factor productivity
+        tau_corp = scalar, statutory corporate tax rate
+        delta_tc = scalar, effective depreciation rate implied by tax law.
 
     Functions called: None
 
     Objects in function:
         K = [T+S,] vector, aggregate capital 
 
-    Returns: r
+    Returns: K
     '''
 
-    alpha, delta , Z = params
-    K = (alpha*Z/(r+delta))**(1/(1-alpha)) * L
+    alpha, delta , Z, tau_corp, delta_tc = params
+    K = ((1-tau_corp)*alpha*Z/(r+delta-tau_corp*delta_tc))**(1/(1-alpha)) * L
     return K

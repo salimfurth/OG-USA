@@ -501,11 +501,11 @@ def get_full_parameters(baseline, guid, user_modifiable, metadata):
     # Small Open Economy parameters. Currently these are placeholders. Can introduce a
     # borrow/lend spread and a time path from t=0 to t=T-1. However, from periods T through
     # T+S, the steady state rate should hold.
-    ss_firm_r_annual   =  0.04
+    ss_firm_r_annual   =  0.041
     ss_hh_r_annual     =  0.04
     ss_firm_r          = (1 + ss_firm_r_annual) ** (float(ending_age - starting_age) / S) - 1
     ss_hh_r            = (1 + ss_hh_r_annual)   ** (float(ending_age - starting_age) / S) - 1
-    tpi_firm_r         = np.ones(T+S)*ss_firm_r
+    tpi_firm_r         = np.ones(T+S)*(ss_firm_r)
     tpi_hh_r           = np.ones(T+S)*ss_hh_r
 
     # Fiscal imbalance parameters. These allow government deficits, debt, and savings.
@@ -727,7 +727,7 @@ def get_full_parameters(baseline, guid, user_modifiable, metadata):
     PLOT_TPI = False
     maxiter = 250
     mindist_SS = 1e-9
-    mindist_TPI =  1e-9# 2e-5
+    mindist_TPI =  1e-6# 1e-9
     nu = .4
     flag_graphs = False
     #   Calibration parameters

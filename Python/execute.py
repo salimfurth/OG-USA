@@ -54,8 +54,6 @@ def runner(output_base, baseline_dir, baseline=False,
         run_params.update(user_params)
     if 'debt_ratio_ss' in user_params:
         run_params['debt_ratio_ss']=user_params['debt_ratio_ss']
-
-    # Modify ogusa parameters based on user input
     if 'g_y_annual' in user_params:
         print "updating g_y_annual and associated"
         ending_age = run_params['ending_age']
@@ -64,6 +62,12 @@ def runner(output_base, baseline_dir, baseline=False,
         g_y = (1 + user_params['g_y_annual'])**(float(ending_age - starting_age) / S) - 1
         run_params['g_y'] = g_y
         run_params.update(user_params)
+    if 'ss_firm_r' in user_params:
+        print "updating ss_firm_r"
+        run_params['ss_firm_r'] = user_params['ss_firm_r']
+    if 'tpi_firm_r' in user_params:
+        print "updating tpi_firm_r"
+        run_params['tpi_firm_r'] = user_params['tpi_firm_r']
 
 
     from ogusa import SS, TPI

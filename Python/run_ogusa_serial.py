@@ -3,6 +3,7 @@ import os
 import sys
 from multiprocessing import Process
 import time
+import numpy as np
 
 #OGUSA_PATH = os.environ.get("OGUSA_PATH", "../../ospc-dynamic/dynamic/Python")
 
@@ -52,16 +53,17 @@ def run_micro_macro(user_params):
         Run SS for Baseline first - so can run baseline and reform in parallel if want
     ------------------------------------------------------------------------
     '''
-    # output_base = BASELINE_DIR
-    # input_dir = BASELINE_DIR
-    # kwargs={'output_base':output_base, 'baseline_dir':BASELINE_DIR,
-    #        'baseline':True, 'analytical_mtrs':False, 'age_specific':True,
-    #        'user_params':user_params,'guid':'test',
-    #        'run_micro':False, 'small_open':False, 'budget_balance':False}
-    # #p1 = Process(target=runner, kwargs=kwargs)
-    # #p1.start()
-    # runner_SS(**kwargs)
-    # quit()
+#    
+#    output_base = BASELINE_DIR
+#    input_dir = BASELINE_DIR
+#    kwargs={'output_base':output_base, 'baseline_dir':BASELINE_DIR,
+#            'baseline':True, 'analytical_mtrs':False, 'age_specific':True,
+#            'user_params':user_params,'guid':'test',
+#            'run_micro':False, 'small_open':True, 'budget_balance':False}
+#    #p1 = Process(target=runner, kwargs=kwargs)
+#    #p1.start()
+#    runner_SS(**kwargs)
+#    quit()
 
 
     '''
@@ -69,35 +71,46 @@ def run_micro_macro(user_params):
         Run baseline
     ------------------------------------------------------------------------
     '''
-
-    output_base = BASELINE_DIR
-    input_dir = BASELINE_DIR
-    kwargs={'output_base':output_base, 'baseline_dir':BASELINE_DIR,
-            'baseline':True, 'analytical_mtrs':False, 'age_specific':True,
-            'user_params':user_params,'guid':'',
-            'run_micro':False, 'small_open': False, 'budget_balance':False}
-    #p1 = Process(target=runner, kwargs=kwargs)
-    #p1.start()
-    runner(**kwargs)
-    quit()
+#
+#    output_base = BASELINE_DIR
+#    input_dir = BASELINE_DIR
+#    kwargs={'output_base':output_base, 'baseline_dir':BASELINE_DIR,
+#            'baseline':True, 'analytical_mtrs':False, 'age_specific':True,
+#            'user_params':user_params,'guid':'',
+#            'run_micro':False, 'small_open': True, 'budget_balance':False}
+#    #p1 = Process(target=runner, kwargs=kwargs)
+#    #p1.start()
+#    runner(**kwargs)
+#    quit()
 
     '''
     ------------------------------------------------------------------------
         Run reform
     ------------------------------------------------------------------------
     '''
-#    output_base = REFORM_DIR
-#    input_dir = REFORM_DIR
-#    guid_iter = 'reform_' + str(0)
-#    kwargs={'output_base':output_base, 'baseline_dir':BASELINE_DIR,
-#            'baseline':False, 'analytical_mtrs':False, 'age_specific':False,
-#            'user_params':user_params,'guid':'_alt',
-#            'reform':reform , 'run_micro':False, 'small_open': True}
-#    #p2 = Process(target=runner, kwargs=kwargs)
-#    #p2.start()
-#    runner(**kwargs)
-#
-#
+    
+    S = int(80)
+    T = int(4 * S)
+
+    tpi_firm_r_reform = np.ones(T+S)*(0.04)
+    tpi_firm_r_reform[0] = 0.041
+    tpi_firm_r_reform[1] = 0.041
+    tpi_firm_r_reform[2] = 0.0405
+    tpi_firm_r_reform[3] = 0.0402
+    user_params = {'frisch':0.41, 'start_year':2016, 'debt_ratio_ss':1.0, 'ss_firm_r':0.04, 'tpi_firm_r':tpi_firm_r_reform}
+
+    output_base = REFORM_DIR
+    input_dir = REFORM_DIR
+    guid_iter = 'reform_' + str(0)
+    kwargs={'output_base':output_base, 'baseline_dir':BASELINE_DIR,
+            'baseline':False, 'analytical_mtrs':False, 'age_specific':False,
+            'user_params':user_params,'guid':'_alt',
+            'reform': '', 'run_micro':False, 'small_open': True, 'budget_balance':False}
+    #p2 = Process(target=runner, kwargs=kwargs)
+    #p2.start()
+    runner(**kwargs)
+
+
 
 
     #p1.join()

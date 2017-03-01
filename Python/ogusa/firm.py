@@ -37,8 +37,8 @@ def get_r(Y, K, params):
     Returns: r
     '''
 
-    alpha, delta, tau_b, delta_tau = params
-    r = (1-tau_b)*(alpha * Y / K) - delta + tau_b*delta_tau
+    alpha, delta, tau_b, delta_tau, k_wedge = params
+    r = (1-tau_b)*(alpha * Y / K) - delta + tau_b*delta_tau - k_wedge
     return r
 
 

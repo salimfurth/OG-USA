@@ -347,7 +347,7 @@ def get_reduced_parameters(baseline, guid, user_modifiable, metadata):
     tG1                = int(T/5)  # change government spending rule from alpha_G*Y to glide toward SS debt ratio
     tG2                = int(T*0.8)  # change gov't spending rule with final discrete jump to achieve SS debt ratio
     rho_G              = 0.1  # 0 < rho_G < 1 is transition speed for periods [tG1, tG2-1]. Lower rho_G => slower convergence.
-    debt_ratio_ss      = 0.4  # assumed steady-state debt/GDP ratio. Savings would be a negative number.
+    debt_ratio_ss      = 1.0  # assumed steady-state debt/GDP ratio. Savings would be a negative number.
     initial_debt       = 0.2  # first-period debt/GDP ratio. Savings would be a negative number.
 
     # Business tax parameters
@@ -490,6 +490,8 @@ def get_full_parameters(baseline, guid, user_modifiable, metadata):
     Z = 1.0
     delta_annual = .05 # approximately the value from Kehoe calibration exercise: http://www.econ.umn.edu/~tkehoe/classes/calibration-04.pdf
     delta = 1 - ((1 - delta_annual) ** (float(ending_age - starting_age) / S))
+    k_wedge = 0.00;
+    
     ltilde = 1.0
     g_y_annual = 0.03
     g_y = (1 + g_y_annual)**(float(ending_age - starting_age) / S) - 1
@@ -501,8 +503,8 @@ def get_full_parameters(baseline, guid, user_modifiable, metadata):
     # Small Open Economy parameters. Currently these are placeholders. Can introduce a
     # borrow/lend spread and a time path from t=0 to t=T-1. However, from periods T through
     # T+S, the steady state rate should hold.
-    ss_firm_r_annual   =  0.041
-    ss_hh_r_annual     =  0.04
+    ss_firm_r_annual   =  0.0525
+    ss_hh_r_annual     =  0.0515
     ss_firm_r          = (1 + ss_firm_r_annual) ** (float(ending_age - starting_age) / S) - 1
     ss_hh_r            = (1 + ss_hh_r_annual)   ** (float(ending_age - starting_age) / S) - 1
     tpi_firm_r         = np.ones(T+S)*(ss_firm_r)
@@ -514,7 +516,7 @@ def get_full_parameters(baseline, guid, user_modifiable, metadata):
     tG1                = 20#int(T/5)  # change government spending rule from alpha_G*Y to glide toward SS debt ratio
     tG2                = int(T*0.8)  # change gov't spending rule with final discrete jump to achieve SS debt ratio
     rho_G              = 0.03#0.1  # 0 < rho_G < 1 is transition speed for periods [tG1, tG2-1]. Lower rho_G => slower convergence.
-    debt_ratio_ss      = 0.4  # assumed steady-state debt/GDP ratio. Savings would be a negative number.
+    debt_ratio_ss      = 1.0  # assumed steady-state debt/GDP ratio. Savings would be a negative number.
     initial_debt       = 0.59 #0.2  # first-period debt/GDP ratio. Savings would be a negative number.
 
     # Business tax parameters
@@ -547,10 +549,10 @@ def get_full_parameters(baseline, guid, user_modifiable, metadata):
         dict_params = read_tax_func_estimate(estimate_file, baseline_pckl)
 
     else:
-        policy_pckl = "TxFuncEst_policy{}.pkl".format(guid)
+        policy_pckl = "TxFuncEst_baseline{}.pkl".format(guid)
         estimate_file = os.path.join(TAX_ESTIMATE_PATH,
                                      policy_pckl)
-        print 'using policy tax parameters'
+        print 'ALERT: still using baseline tax parameters'
         dict_params = read_tax_func_estimate(estimate_file, policy_pckl)
 
 
@@ -727,7 +729,7 @@ def get_full_parameters(baseline, guid, user_modifiable, metadata):
     PLOT_TPI = False
     maxiter = 250
     mindist_SS = 1e-9
-    mindist_TPI =  1e-6# 1e-9
+    mindist_TPI =  2e-7# 1e-9
     nu = .4
     flag_graphs = False
     #   Calibration parameters

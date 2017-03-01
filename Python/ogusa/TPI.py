@@ -147,7 +147,8 @@ def create_tpi_params(**sim_params):
     '''
     tau_b = sim_params['tau_b']
     delta_tau = sim_params['delta_tau']
-    biz_tax_params  = (tau_b, delta_tau)
+    k_wedge = sim_params['k_wedge']
+    biz_tax_params  = (tau_b, delta_tau, k_wedge)
 
     initial_debt  = sim_params['initial_debt']
 
@@ -497,7 +498,7 @@ def run_TPI(income_tax_params, tpi_params, iterative_params, small_open_params, 
     B0, b_sinit, b_splus1init, factor, initial_b, initial_n, omega_S_preTP, initial_debt = initial_values
     Kss, Bss, Lss, rss, wss, BQss, T_Hss, revenue_ss, bssmat_splus1, nssmat, Yss, Gss = SS_values
     budget_balance, alpha_T, alpha_G, tG1, tG2, rho_G, debt_ratio_ss = fiscal_params
-    tau_b, delta_tau = biz_tax_params
+    tau_b, delta_tau, k_wedge = biz_tax_params
 
     print 'Government spending breakpoints are tG1: ', tG1, '; and tG2:', tG2
 
@@ -563,7 +564,7 @@ def run_TPI(income_tax_params, tpi_params, iterative_params, small_open_params, 
     Y = firm.get_Y(K, L, Y_params)
     w = firm.get_w(Y, L, alpha)
     if small_open == False:
-        r_params = (alpha, delta, tau_b, delta_tau)
+        r_params = (alpha, delta, tau_b, delta_tau, k_wedge)
         r = firm.get_r(Y, K, r_params)
     else:
         r = tpi_hh_r
@@ -694,7 +695,7 @@ def run_TPI(income_tax_params, tpi_params, iterative_params, small_open_params, 
         Ynew = firm.get_Y(K[:T], L[:T], Y_params)
         wnew = firm.get_w(Ynew[:T], L[:T], alpha)
         if small_open == False:
-            r_params = (alpha, delta, tau_b, delta_tau)
+            r_params = (alpha, delta, tau_b, delta_tau, k_wedge)
             rnew = firm.get_r(Ynew[:T], K[:T], r_params)
         else:
             rnew = r
@@ -841,7 +842,7 @@ def run_TPI(income_tax_params, tpi_params, iterative_params, small_open_params, 
     if small_open == False:
         I_params = (delta, g_y, omega[:T].reshape(T, S, 1), lambdas, imm_rates[:T].reshape(T, S, 1), g_n_vector[1:T+1], 'TPI')
         I = firm.get_I(bmat_splus1[:T], K[1:T+1], K[:T], I_params)
-        rc_error = Y[:T] - C[:T] - I[:T] - G[:T]
+        rc_error = Y[:T] - C[:T] - I[:T] - G[:T] - k_wedge*K[:T]
     else:
         #InvestmentPlaceholder = np.zeros(bmat_splus1[:T].shape)
         #I_params = (delta, g_y, omega[:T].reshape(T, S, 1), lambdas, imm_rates[:T].reshape(T, S, 1), g_n_vector[1:T+1], 'TPI')
@@ -885,7 +886,7 @@ def run_TPI(income_tax_params, tpi_params, iterative_params, small_open_params, 
     tpi_vars = os.path.join(tpi_dir, "TPI_vars.pkl")
     pickle.dump(output, open(tpi_vars, "wb"))
 
-    macro_output = {'Y': Y, 'K': K, 'L': L, 'C': C, 'I': I,
+    macro_output = {'Y': Y, 'K': K, 'L': L, 'C': C, 'K':K, 'I': I,
                     'BQ': BQ, 'T_H': T_H, 'r': r, 'w': w,
                     'tax_path': tax_path}
 
@@ -901,6 +902,7 @@ def run_TPI(income_tax_params, tpi_params, iterative_params, small_open_params, 
         tpiwriter.writerow(I)
         tpiwriter.writerow(r)
         if small_open == True:
+            tpiwriter.writerow(tpi_firm_r)
             tpiwriter.writerow(B)
             tpiwriter.writerow(BI)
             tpiwriter.writerow(new_borrowing)

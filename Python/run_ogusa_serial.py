@@ -34,9 +34,9 @@ def run_micro_macro(user_params):
 
     reform = {
     2017: {
-        '_II_rt5': [.3],
-        '_II_rt6': [.3],
-        '_II_rt7': [0.3],
+       # '_II_rt5': [.3],
+       # '_II_rt6': [.3],
+       # '_II_rt7': [0.3],
     }, }
 
 
@@ -46,7 +46,7 @@ def run_micro_macro(user_params):
     BASELINE_DIR = "./OUTPUT_BASELINE"
 
 
-    user_params = {'frisch':0.41, 'start_year':2016, 'debt_ratio_ss':1.0}
+    user_params = {'start_year':2016, 'debt_ratio_ss':1.0}
 
     '''
     ------------------------------------------------------------------------
@@ -71,7 +71,7 @@ def run_micro_macro(user_params):
         Run baseline
     ------------------------------------------------------------------------
     '''
-#
+
 #    output_base = BASELINE_DIR
 #    input_dir = BASELINE_DIR
 #    kwargs={'output_base':output_base, 'baseline_dir':BASELINE_DIR,
@@ -92,19 +92,20 @@ def run_micro_macro(user_params):
     S = int(80)
     T = int(4 * S)
 
-    tpi_firm_r_reform = np.ones(T+S)*(0.04)
-    tpi_firm_r_reform[0] = 0.041
-    tpi_firm_r_reform[1] = 0.041
-    tpi_firm_r_reform[2] = 0.0405
-    tpi_firm_r_reform[3] = 0.0402
-    user_params = {'frisch':0.41, 'start_year':2016, 'debt_ratio_ss':1.0, 'ss_firm_r':0.04, 'tpi_firm_r':tpi_firm_r_reform}
+    tpi_firm_r_reform = np.ones(T+S)*(0.0515)
+    tpi_firm_r_reform[0] = 0.0525
+    tpi_firm_r_reform[1] = 0.0523
+    tpi_firm_r_reform[2] = 0.0520
+    tpi_firm_r_reform[3] = 0.0517
+
+    user_params = {'start_year':2016, 'debt_ratio_ss':1.0, 'tpi_firm_r': tpi_firm_r_reform}
 
     output_base = REFORM_DIR
     input_dir = REFORM_DIR
     guid_iter = 'reform_' + str(0)
     kwargs={'output_base':output_base, 'baseline_dir':BASELINE_DIR,
-            'baseline':False, 'analytical_mtrs':False, 'age_specific':False,
-            'user_params':user_params,'guid':'_alt',
+            'baseline':False, 'analytical_mtrs':False, 'age_specific':True,
+            'user_params':user_params,'guid':'',
             'reform': '', 'run_micro':False, 'small_open': True, 'budget_balance':False}
     #p2 = Process(target=runner, kwargs=kwargs)
     #p2.start()

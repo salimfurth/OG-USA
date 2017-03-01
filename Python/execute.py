@@ -46,7 +46,7 @@ def runner(output_base, baseline_dir, baseline=False,
 
     # Modify ogusa parameters based on user input
     if 'frisch' in user_params:
-        print "updating fricsh and associated"
+        print "updating frisch and associated"
         b_ellipse, upsilon = ogusa.elliptical_u_est.estimation(user_params['frisch'],
                                                                run_params['ltilde'])
         run_params['b_ellipse'] = b_ellipse
@@ -62,6 +62,9 @@ def runner(output_base, baseline_dir, baseline=False,
         g_y = (1 + user_params['g_y_annual'])**(float(ending_age - starting_age) / S) - 1
         run_params['g_y'] = g_y
         run_params.update(user_params)
+    if 'k_wedge' in user_params:
+        print "updating k_wedge"
+        run_params['k_wedge'] = user_params['k_wedge']
     if 'ss_firm_r' in user_params:
         print "updating ss_firm_r"
         run_params['ss_firm_r'] = user_params['ss_firm_r']
@@ -83,7 +86,7 @@ def runner(output_base, baseline_dir, baseline=False,
                 'analytical_mtrs', 'b_ellipse', 'k_ellipse', 'upsilon',
                 'small_open', 'budget_balance', 'ss_firm_r', 'ss_hh_r', 'tpi_firm_r', 'tpi_hh_r',
                 'alpha_T', 'alpha_G', 'tG1', 'tG2', 'rho_G', 'debt_ratio_ss',
-                'tau_b', 'delta_tau',
+                'tau_b', 'delta_tau', 'k_wedge',
                 'chi_b_guess', 'chi_n_guess','etr_params','mtrx_params',
                 'mtry_params','tau_payroll', 'tau_bq',
                 'retire', 'mean_income_data', 'g_n_vector',
@@ -146,15 +149,16 @@ def runner(output_base, baseline_dir, baseline=False,
         Pickle TPI results
     ------------------------------------------------------------------------
     '''
-    tpi_dir = os.path.join(output_base, "TPI")
-    utils.mkdirs(tpi_dir)
-    tpi_vars = os.path.join(tpi_dir, "TPI_vars.pkl")
-    pickle.dump(tpi_output, open(tpi_vars, "wb"))
 
     tpi_dir = os.path.join(output_base, "TPI")
     utils.mkdirs(tpi_dir)
     tpi_vars = os.path.join(tpi_dir, "TPI_macro_vars.pkl")
     pickle.dump(macro_output, open(tpi_vars, "wb"))
+
+    tpi_dir = os.path.join(output_base, "TPI")
+    utils.mkdirs(tpi_dir)
+    tpi_vars = os.path.join(tpi_dir, "TPI_vars.pkl")
+    pickle.dump(tpi_output, open(tpi_vars, "wb"))
 
 
     print "Time path iteration complete.  It"
@@ -203,8 +207,9 @@ def runner_SS(output_base, baseline_dir, baseline=False,
         run_params.update(user_params)
     if 'debt_ratio_ss' in user_params:
         run_params['debt_ratio_ss']=user_params['debt_ratio_ss']
-
-    # Modify ogusa parameters based on user input
+    if 'k_wedge' in user_params:
+        print "updating k_wedge"
+        run_params['k_wedge'] = user_params['k_wedge']
     if 'g_y_annual' in user_params:
         print "updating g_y_annual and associated"
         ending_age = run_params['ending_age']
@@ -213,6 +218,12 @@ def runner_SS(output_base, baseline_dir, baseline=False,
         g_y = (1 + user_params['g_y_annual'])**(float(ending_age - starting_age) / S) - 1
         run_params['g_y'] = g_y
         run_params.update(user_params)
+    if 'ss_firm_r' in user_params:
+        print "updating ss_firm_r"
+        run_params['ss_firm_r'] = user_params['ss_firm_r']
+    if 'tpi_firm_r' in user_params:
+        print "updating tpi_firm_r"
+        run_params['tpi_firm_r'] = user_params['tpi_firm_r']
 
     from ogusa import SS, TPI
 
@@ -226,7 +237,7 @@ def runner_SS(output_base, baseline_dir, baseline=False,
                 'analytical_mtrs', 'b_ellipse', 'k_ellipse', 'upsilon',
                 'small_open', 'budget_balance', 'ss_firm_r', 'ss_hh_r', 'tpi_firm_r', 'tpi_hh_r',
                 'alpha_T', 'alpha_G', 'tG1', 'tG2', 'rho_G', 'debt_ratio_ss',
-                'tau_b', 'delta_tau',
+                'tau_b', 'delta_tau', 'k_wedge',
                 'chi_b_guess', 'chi_n_guess','etr_params','mtrx_params',
                 'mtry_params','tau_payroll', 'tau_bq',
                 'retire', 'mean_income_data', 'g_n_vector',

@@ -277,7 +277,7 @@ def get_parameters(test=False, baseline=False, guid='', user_modifiable=False, m
         MINIMIZER_TOL = 1e-6
         MINIMIZER_OPTIONS = {'maxiter': 1}
         PLOT_TPI = False
-        maxiter = 20
+        maxiter = 40
         mindist_SS = 1e-6
         mindist_TPI = 1e-2#1e-3
         nu = .4

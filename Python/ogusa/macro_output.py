@@ -63,13 +63,14 @@ def dump_diff_output(baseline_dir, policy_dir):
     '''
 
     # read macro output
-    tpi_macro_vars_policy_path = os.path.join(policy_dir, "TPI", "TPI_macro_vars.pkl")
+    tpi_macro_vars_policy_path = os.path.join(policy_dir, "TPI", "TPI_vars.pkl")
     tpi_macro_vars_policy = pickle.load(open( tpi_macro_vars_policy_path, "rb" ))
-    tpi_macro_vars_baseline_path = os.path.join(baseline_dir, "TPI", "TPI_macro_vars.pkl")
+    tpi_macro_vars_baseline_path = os.path.join(baseline_dir, "TPI", "TPI_vars.pkl")
     tpi_macro_vars_baseline = pickle.load(open( tpi_macro_vars_baseline_path, "rb" ) )
 
+    tpi_vars = int(11)
     T = len(tpi_macro_vars_baseline['C'])
-    baseline_macros = np.zeros((7,T))
+    baseline_macros = np.zeros((tpi_vars,T))
     baseline_macros[0,:] = tpi_macro_vars_baseline['Y'][:T]
     baseline_macros[1,:] = tpi_macro_vars_baseline['C'][:T]
     baseline_macros[2,:] = tpi_macro_vars_baseline['K'][:T]
@@ -77,8 +78,13 @@ def dump_diff_output(baseline_dir, policy_dir):
     baseline_macros[4,:] = tpi_macro_vars_baseline['L'][:T]
     baseline_macros[5,:] = tpi_macro_vars_baseline['w'][:T]
     baseline_macros[6,:] = tpi_macro_vars_baseline['r'][:T]
+    baseline_macros[7,:] = tpi_macro_vars_baseline['REVENUE'][:T]
+    baseline_macros[8,:] = tpi_macro_vars_baseline['G'][:T]
+    baseline_macros[9,:] = tpi_macro_vars_baseline['T_H'][:T]
+    baseline_macros[10,:] = tpi_macro_vars_baseline['D'][:T]
 
-    policy_macros = np.zeros((7,T))
+
+    policy_macros = np.zeros((tpi_vars,T))
     policy_macros[0,:] = tpi_macro_vars_policy['Y'][:T]
     policy_macros[1,:] = tpi_macro_vars_policy['C'][:T]
     policy_macros[2,:] = tpi_macro_vars_policy['K'][:T]
@@ -86,8 +92,12 @@ def dump_diff_output(baseline_dir, policy_dir):
     policy_macros[4,:] = tpi_macro_vars_policy['L'][:T]
     policy_macros[5,:] = tpi_macro_vars_policy['w'][:T]
     policy_macros[6,:] = tpi_macro_vars_policy['r'][:T]
+    policy_macros[7,:] = tpi_macro_vars_policy['REVENUE'][:T]
+    policy_macros[8,:] = tpi_macro_vars_policy['G'][:T]
+    policy_macros[9,:] = tpi_macro_vars_policy['T_H'][:T]
+    policy_macros[10,:] = tpi_macro_vars_policy['D'][:T]
 
-    pct_changes = np.zeros((7,12))
+    pct_changes = np.zeros((tpi_vars,12))
     # pct changes for each year in budget window
     pct_changes[:,:10] = ((policy_macros-baseline_macros)/policy_macros)[:,:10]
     # pct changes over entire budget window

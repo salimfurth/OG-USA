@@ -735,10 +735,10 @@ def SS_fsolve(guesses, params):
   #  print 'mean income in model and data: ', average_income_model, mean_income_data
   #  print 'model income with factor: ', average_income_model*factor
 
-  #  print 'errors: ', error1, error2, error3, error4
+    print 'errors: ', error1, error2, error3, error4
     print 'Y: ', new_Y
-  #  print 'factor: ', new_factor
-  #  print 'factor prices: ', new_r, new_w
+    print 'factor: ', new_factor
+    #print 'factor prices: ', new_r, new_w
 
 
     # Check and punish violations
@@ -894,7 +894,7 @@ def run_SS(income_tax_params, ss_params, iterative_params, chi_params, small_ope
         rguess = 0.01 + delta
         wguess = 1.2
         T_Hguess = 0.12
-        factorguess = 70000
+        factorguess = 120000
 
         ss_params_baseline = [b_guess.reshape(S, J), n_guess.reshape(S, J), chi_params, ss_params, income_tax_params, iterative_params, small_open_params]
         guesses = [rguess, wguess, T_Hguess, factorguess]

@@ -694,7 +694,7 @@ def run_TPI(income_tax_params, tpi_params, iterative_params, small_open_params, 
         wnew = firm.get_w(Y[:T], L[:T], alpha)
         if small_open == False:
             r_params = (alpha, delta, tau_b, delta_tau, k_wedge)
-            rnew = firm.get_r(Ynew[:T], K[:T], r_params)
+            rnew = firm.get_r(Y[:T], K[:T], r_params)
         else:
             rnew = r.copy()
 
@@ -937,10 +937,10 @@ def run_TPI(income_tax_params, tpi_params, iterative_params, small_open_params, 
 
     if ((TPIiter >= maxiter) or (np.absolute(TPIdist) > mindist_TPI)) and ENFORCE_SOLUTION_CHECKS :
         raise RuntimeError("Transition path equlibrium not found (TPIdist)")
-
-    if ((np.any(np.absolute(rc_error) >= mindist_TPI))
-        and ENFORCE_SOLUTION_CHECKS):
-        raise RuntimeError("Transition path equlibrium not found (rc_error)")
+#
+#    if ((np.any(np.absolute(rc_error) >= mindist_TPI))
+#        and ENFORCE_SOLUTION_CHECKS):
+#        raise RuntimeError("Transition path equlibrium not found (rc_error)")
 
     if ((np.any(np.absolute(eul_savings) >= mindist_TPI) or
         (np.any(np.absolute(eul_laborleisure) > mindist_TPI)))

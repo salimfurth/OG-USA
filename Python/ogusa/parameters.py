@@ -270,7 +270,7 @@ def get_parameters(test=False, baseline=False, guid='', user_modifiable=False, m
     # Model Parameters
     if test:
         # size of state space
-        S = int(40)
+        S = int(80)
         lambdas = np.array([0.6,0.4])
         J = lambdas.shape[0]
         # Simulation Parameters
@@ -311,7 +311,7 @@ def get_parameters(test=False, baseline=False, guid='', user_modifiable=False, m
     Z = 1.0
     delta_annual = .05 # approximately the value from Kehoe calibration exercise: http://www.econ.umn.edu/~tkehoe/classes/calibration-04.pdf
     delta = 1 - ((1 - delta_annual) ** (float(ending_age - starting_age) / S))
-    k_wedge = 0.00;  # For use in closed economy.
+    k_wedge = 0.0022;  # For use in closed economy.
     
     ltilde = 1.0
     g_y_annual = 0.03
@@ -324,7 +324,7 @@ def get_parameters(test=False, baseline=False, guid='', user_modifiable=False, m
     # Small Open Economy parameters. Currently these are placeholders. Can introduce a
     # borrow/lend spread and a time path from t=0 to t=T-1. However, from periods T through
     # T+S, the steady state rate should hold.
-    ss_firm_r_annual   =  0.0525
+    ss_firm_r_annual   =  0.0537
     ss_hh_r_annual     =  0.0515
     ss_firm_r          = (1 + ss_firm_r_annual) ** (float(ending_age - starting_age) / S) - 1
     ss_hh_r            = (1 + ss_hh_r_annual)   ** (float(ending_age - starting_age) / S) - 1

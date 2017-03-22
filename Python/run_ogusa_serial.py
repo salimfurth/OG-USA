@@ -74,7 +74,7 @@ def run_micro_macro(user_params):
     kwargs={'output_base':output_base, 'baseline_dir':BASELINE_DIR,
             'test':False, 'time_path':True, 'baseline':True, 'analytical_mtrs':False, 'age_specific':True,
             'user_params':user_params,'guid':'',
-            'run_micro':False, 'small_open': False, 'budget_balance':False}
+            'run_micro':False, 'small_open': True, 'budget_balance':False}
     #p1 = Process(target=runner, kwargs=kwargs)
     #p1.start()
     runner(**kwargs)
@@ -90,12 +90,12 @@ def run_micro_macro(user_params):
     T = int(4 * S)
 
     tpi_firm_r_reform = np.ones(T+S)*(0.0515)
-    tpi_firm_r_reform[0] = 0.0525
-    tpi_firm_r_reform[1] = 0.0523
-    tpi_firm_r_reform[2] = 0.0520
-    tpi_firm_r_reform[3] = 0.0517
+    tpi_firm_r_reform[0] = 0.0537
+    tpi_firm_r_reform[1] = 0.0531
+    tpi_firm_r_reform[2] = 0.0525
+    tpi_firm_r_reform[3] = 0.0520
 
-    user_params = {'start_year':2016, 'debt_ratio_ss':1.0, 'k_wedge':0.10} #, 'tpi_firm_r': tpi_firm_r_reform
+    user_params = {'start_year':2016, 'debt_ratio_ss':1.0, 'tpi_firm_r': tpi_firm_r_reform} # 'k_wedge':0.0
 
     output_base = REFORM_DIR
     input_dir = REFORM_DIR
@@ -103,7 +103,7 @@ def run_micro_macro(user_params):
     kwargs={'output_base':output_base, 'baseline_dir':BASELINE_DIR,
             'test':False, 'time_path':True, 'baseline':False, 'analytical_mtrs':False, 'age_specific':True,
             'user_params':user_params,'guid':'', 'reform':'' ,
-            'run_micro':False, 'small_open': False, 'budget_balance':False, 'baseline_spending':True}
+            'run_micro':False, 'small_open': True, 'budget_balance':False, 'baseline_spending':True}
     #p2 = Process(target=runner, kwargs=kwargs)
     #p2.start()
     runner(**kwargs)

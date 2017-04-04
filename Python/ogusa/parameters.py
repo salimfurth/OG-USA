@@ -292,7 +292,7 @@ def get_parameters(test=False, baseline=False, guid='', user_modifiable=False, m
         PLOT_TPI = False
         maxiter = 250
         mindist_SS = 1e-9
-        mindist_TPI =  1e-9
+        mindist_TPI =  1e-8
         nu = .4
         flag_graphs = False
 
@@ -311,10 +311,10 @@ def get_parameters(test=False, baseline=False, guid='', user_modifiable=False, m
     Z = 1.0
     delta_annual = .05 # approximately the value from Kehoe calibration exercise: http://www.econ.umn.edu/~tkehoe/classes/calibration-04.pdf
     delta = 1 - ((1 - delta_annual) ** (float(ending_age - starting_age) / S))
-    k_wedge = 0.0022;  # For use in closed economy.
+    k_wedge = 0.0011;  # For use in closed economy.
     
     ltilde = 1.0
-    g_y_annual = 0.03
+    g_y_annual = 0.011
     g_y = (1 + g_y_annual)**(float(ending_age - starting_age) / S) - 1
     #   Ellipse parameters
     frisch = 0.4 # Frisch elasticity consistent with Altonji (JPE, 1996) and Peterman (Econ Inquiry, 2016)
